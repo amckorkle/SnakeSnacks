@@ -7,6 +7,7 @@ import java.awt.event.*;
 public class SnakeSnacks extends JFrame{
 	private final int WINDOW_W = 500;
 	private final int WINDOW_H = 500;
+	private Tile[][] gameGrid;
 	
 	public SnakeSnacks(){
 		setTitle("SnakeSnacks");
