@@ -21,6 +21,9 @@ public class SnakeSnacks extends JFrame{
 		setVisible(true);
 	}
 	
+	public void redrawGameGrid(){
+		
+	}
 	
 	public static void main(String[] args){
 		new SnakeSnacks();
