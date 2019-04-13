@@ -1,3 +1,4 @@
+import java.awt.Point;
 
 public class Food extends Tile{
 	
@@ -5,7 +6,7 @@ public class Food extends Tile{
 		gridPoint = p;
 	}
 
-	public display(){
+	public void display(){
 		
 	}
 }
