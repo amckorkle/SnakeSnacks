@@ -12,6 +12,7 @@ public class SnakeSnacks extends JFrame{
 	private Player panel2;
 	private JPanel gamePanel;
 	private Menu menu;
+	private Food food;
 
 	
 	public SnakeSnacks(){
@@ -21,11 +22,13 @@ public class SnakeSnacks extends JFrame{
 
 		gamePanel = new JPanel();
 		menu = new Menu();
+		food = new Food();
 		panel1 = new Player("Player 1");
 		panel2 = new Player("Player 2");
 		gamePanel.add(panel1, BorderLayout.SOUTH);
         gamePanel.add(panel2, BorderLayout.NORTH);
 		gamePanel.add(menu, BorderLayout.CENTER);
+		gamePanel.add(food, BorderLayout.EAST);
 
 		add(gamePanel);
 		
