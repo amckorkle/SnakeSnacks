@@ -29,23 +29,13 @@ public class Player extends JPanel{
         gameWins = new JTextField(8);
         gameWins.setEditable(false);
 
-        assignPanel(panel);
+        assignPanel(panel, playerOwner);
 
     }
 
-    public void incrementRoundWins(JPanel panel) {
-	    roundScore++;
-    }
+    public void assignPanel(JPanel panel, String playerOwner){
+        setBorder(BorderFactory.createTitledBorder(playerOwner));
 
-    public void incrementGameWins(JPanel panel){
-        gameScore++;
-    }
-
-   // public void refresh(){
-	//	roundWins.setText("" + playerOwner.getWins());
-	//}
-
-    public void assignPanel(JPanel panel){
         panel.add(colorLabel);
         panel.add(colorField);
         panel.add(roundLabel);
