@@ -19,7 +19,7 @@ public class SnakeSnacks extends JFrame{
 
 	
 	public SnakeSnacks(){
-		setTitle("SnakeSnacks");
+		//setTitle("SnakeSnacks");
 		setSize(WINDOW_W, WINDOW_H);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -49,7 +49,7 @@ public class SnakeSnacks extends JFrame{
 		super.paint(g);
 		food.display(g, 20, 20);
 		snakeBody.display(g, 7, 6);
-		wall.display(g, 10, 10);
+		wall.display(g, 0, 0);
 
 
 	}
