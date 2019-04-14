@@ -22,6 +22,7 @@ public class Food extends Tile{
 	private final int RAND_POS = 460;
 
 
+	
 	public Food(){
 		try{
 			apple = ImageIO.read(new File("FoodIcons/apple.png"));
@@ -34,8 +35,6 @@ public class Food extends Tile{
 		catch(IOException e){
 			System.out.println(e.getMessage());
 		}
-		
-
 	}
 
 	public void paint(Graphics graphic, int food_x, int food_y) {

@@ -8,6 +8,10 @@ public class SnakeSnacks extends JFrame{
 	private final int WINDOW_W = 1000;
 	private final int WINDOW_H = 1000;
 	private Tile[][] gameGrid;
+	private KeyListenerManager keyMngr = new KeyListenerManager();
+	
+	private Timer timer;
+
 	private Player panel1;
 	private Player panel2;
 	private JPanel gamePanel;
@@ -22,6 +26,11 @@ public class SnakeSnacks extends JFrame{
 		setTitle("SnakeSnacks");
 		setSize(WINDOW_W, WINDOW_H);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		addKeyListener(keyMngr);
+		
+		timer = new Timer(60, new timerListener());
+		
+		
 
 		gamePanel = new JPanel();
 		playerPanel = new JPanel();
@@ -31,18 +40,33 @@ public class SnakeSnacks extends JFrame{
 		snakeBody  = new Snakebody();
 		panel1 = new Player("Player 1");
 		panel2 = new Player("Player 2");
-		playerPanel.add(panel1, BorderLayout.SOUTH);
-        playerPanel.add(panel2, BorderLayout.NORTH);
-		playerPanel.add(menu, BorderLayout.CENTER);
-
+		
 		//add(playerPanel);
 		//add(gamePanel);
 		
 		setVisible(true);
 	}
 	
-	public void redrawGameGrid(){
-		
+
+
+	private void assignWASDControls(Player p){
+		keyMngr.addKeyCommand("W", () -> p.setDirection(Player.Direction.UP));
+		keyMngr.addKeyCommand("A", () -> p.setDirection(Player.Direction.LEFT));
+		keyMngr.addKeyCommand("S", () -> p.setDirection(Player.Direction.DOWN));
+		keyMngr.addKeyCommand("D", () -> p.setDirection(Player.Direction.RIGHT));
+	}
+
+	private void assignArrowKeysControls(Player p){
+		keyMngr.addKeyCommand("Up", () -> p.setDirection(Player.Direction.UP));
+		keyMngr.addKeyCommand("Left", () -> p.setDirection(Player.Direction.LEFT));
+		keyMngr.addKeyCommand("Down", () -> p.setDirection(Player.Direction.DOWN));
+		keyMngr.addKeyCommand("Right", () -> p.setDirection(Player.Direction.RIGHT));
+	}
+
+	private class timerListener implements ActionListener{
+		public void actionPerformed(ActionEvent e){
+			//player.timeStep(); or equivalent
+		}
 	}
 
 	public void paint(Graphics g){
