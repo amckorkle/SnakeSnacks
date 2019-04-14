@@ -6,7 +6,8 @@ import javax.imageio.ImageIO;
 
 
 
-public class Food /*extends Tile*/{
+public class Food extends Tile{
+	Image apple;
 	Image banana;
 	Image pretzel;
 	Image cheese;
@@ -21,8 +22,7 @@ public class Food /*extends Tile*/{
 	private final int RAND_POS = 460;
 
 
-	public Food(/*Point p*/){
-		//gridPoint = p;
+	public Food(){
 		try{
 			apple = ImageIO.read(new File("FoodIcons/apple.png"));
 			banana = ImageIO.read(new File("FoodIcons/banana.png"));
@@ -38,18 +38,9 @@ public class Food /*extends Tile*/{
 
 	}
 
-	public void paintTEST(Graphics g){
-		Image image = chooseImage();
-		int food_x = locateFoodCoord();
-		int food_y = locateFoodCoord();
-		System.out.println("(" + food_x + ", " + food_y + ")");
-		paint(g, image, food_x, food_y);
-
-	}
-
-	public void paint(Graphics graphic, Image image, int food_x, int food_y) {
+	public void paint(Graphics graphic, int food_x, int food_y) {
         //super.paint(g);
-
+		Image image = chooseImage();
         graphic.drawImage(image, food_x, food_y, 40, 40, null);	
    }
 

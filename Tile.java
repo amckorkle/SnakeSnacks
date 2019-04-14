@@ -3,7 +3,7 @@ import java.awt.*;
 
 abstract class Tile {
 	//protected Point gridPoint;
-	private static final int SCALE = 40;
+	protected static final int SCALE = 40;
 
 	public void display(Graphics g, int grid_x, int grid_y){
 		paint(g, SCALE * grid_x, SCALE * grid_y);
