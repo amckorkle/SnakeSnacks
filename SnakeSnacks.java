@@ -11,6 +11,7 @@ public class SnakeSnacks extends JFrame{
 	private Player panel1;
 	private Player panel2;
 	private JPanel gamePanel;
+	private JPanel playerPanel;
 	private Menu menu;
 	private Food food;
 
@@ -21,21 +22,28 @@ public class SnakeSnacks extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		gamePanel = new JPanel();
+		playerPanel = new JPanel();
 		menu = new Menu();
 		food = new Food();
 		panel1 = new Player("Player 1");
 		panel2 = new Player("Player 2");
-		gamePanel.add(panel1, BorderLayout.SOUTH);
-        gamePanel.add(panel2, BorderLayout.NORTH);
-		gamePanel.add(menu, BorderLayout.CENTER);
-		gamePanel.add(food, BorderLayout.EAST);
+		playerPanel.add(panel1, BorderLayout.SOUTH);
+        playerPanel.add(panel2, BorderLayout.NORTH);
+		playerPanel.add(menu, BorderLayout.CENTER);
 
-		add(gamePanel);
+		//add(playerPanel);
+		//add(gamePanel);
 		
 		setVisible(true);
 	}
 	
 	public void redrawGameGrid(){
+		
+	}
+
+	public void paint(Graphics g){
+		super.paint(g);
+		food.paintTEST(g);
 		
 	}
 	

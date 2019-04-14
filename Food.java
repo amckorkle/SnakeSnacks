@@ -1,37 +1,59 @@
 import javax.swing.*;
 import java.util.*;
 import java.awt.*;
+import java.io.*;
+import javax.imageio.ImageIO;
 
-public class Food extends JPanel/*extends Tile*/{
-	ImageIcon apple = new ImageIcon(new ImageIcon("FoodIcons/apple.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-	ImageIcon banana = new ImageIcon(new ImageIcon("FoodIcons/banana.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-	ImageIcon pretzel = new ImageIcon(new ImageIcon("FoodIcons/pretzel.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-	ImageIcon cheese = new ImageIcon(new ImageIcon("FoodIcons/cheese.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-	ImageIcon cupcake = new ImageIcon(new ImageIcon("FoodIcons/cupcake.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
-	ImageIcon donut = new ImageIcon(new ImageIcon("FoodIcons/donut.png").getImage().getScaledInstance(40, 40, Image.SCALE_DEFAULT));
+
+
+public class Food /*extends Tile*/{
+	Image banana;
+	Image pretzel;
+	Image cheese;
+	Image cupcake;
+	Image donut;
 	private int randomNumber;
-	private Graphics g;
-	private int food_x = 50;
-    private int food_y = 75;
+	private Graphics graphic;
+	private int food_x;
+    private int food_y;
 	private JPanel panel;
 	private JLabel label;
+	private final int RAND_POS = 460;
 
 
 	public Food(/*Point p*/){
 		//gridPoint = p;
-		ImageIcon image = chooseImage();
-		panel = new JPanel();
-		label = new JLabel(image);
-		panel.add(label);
-		add(panel);
+		try{
+			apple = ImageIO.read(new File("FoodIcons/apple.png"));
+			banana = ImageIO.read(new File("FoodIcons/banana.png"));
+			pretzel = ImageIO.read(new File("FoodIcons/pretzel.png"));
+			cheese = ImageIO.read(new File("FoodIcons/cheese.png"));
+			cupcake = ImageIO.read(new File("FoodIcons/cupcake.png"));
+			donut = ImageIO.read(new File("FoodIcons/donut.png"));
+		}
+		catch(IOException e){
+			System.out.println(e.getMessage());
+		}
+		
+
 	}
 
-	public void paintComponent(Graphics g, ImageIcon image) {
-        super.paintComponent(g);
-			image.paintIcon(this, g, food_x, food_y);
-    }
+	public void paintTEST(Graphics g){
+		Image image = chooseImage();
+		int food_x = locateFoodCoord();
+		int food_y = locateFoodCoord();
+		System.out.println("(" + food_x + ", " + food_y + ")");
+		paint(g, image, food_x, food_y);
 
-	public ImageIcon chooseImage(){
+	}
+
+	public void paint(Graphics graphic, Image image, int food_x, int food_y) {
+        //super.paint(g);
+
+        graphic.drawImage(image, food_x, food_y, 40, 40, null);	
+   }
+
+	public Image chooseImage(){
 		int randomNumber = generateRandomNumber();
 		if(randomNumber == 0)
         	return apple;
@@ -56,6 +78,12 @@ public class Food extends JPanel/*extends Tile*/{
         int number = rand.nextInt(6);
 		return number;
 	}
+
+	private int locateFoodCoord() {
+        int coordinate = (int)(Math.random() * RAND_POS);
+        return coordinate;
+    }
+
 
 
 }
