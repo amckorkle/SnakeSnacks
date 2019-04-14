@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.Vector;
+import java.awt.event.*;
 
 public class Player {
     private int roundScore = 0;
@@ -9,6 +10,7 @@ public class Player {
     private String color;
     private JTextField roundWins;
     private JTextField gameWins;
+    private JTextField colorField;
     private JLabel colorLabel;
     private JLabel roundLabel;
     private JLabel gameLabel;
@@ -26,9 +28,15 @@ public class Player {
         panel.setLayout(new GridLayout(3, 1));
 
         colorLabel = new JLabel("COLOR: ");
-		roundLabel = new JLabel("ROUND SCORE: ") ;
-		
-		
+        colorField = new JTextField(8);
+        roundLabel = new JLabel("ROUND SCORE: ");
+        roundWins = new JTextField(8);
+        roundWins.setEditable(false);
+        gameLabel = new JLabel("GAME SCORE: ");
+        gameWins = new JTextField(8);
+        gameWins.setEditable(false);
+
+        assignPanel(panel, playerOwner);
 
 	
     }
@@ -53,12 +61,12 @@ public class Player {
 	}
 
 	private void moveSnakeForward(){
-		Point nextHeadPos = getNextHeadPosition(snake, curDir);
+		// Point nextHeadPos = getNextHeadPosition(snake, curDir);
 
 		// A new body piece in the front
 		//  and remove the old one
 		// idx 0 is the head of the snake
-		snake.insertElementAt(new Snakebody(nextHeadPos), 0);
+		//snake.insertElementAt(new Snakebody(nextHeadPos), 0);
 
 		// if the snake just ate food, you don't need to shrink
 		if(justAteFood){
@@ -69,7 +77,7 @@ public class Player {
 	}
 
 	private static Point getNextHeadPosition(Vector<Snakebody> snake, Direction dir){
-		Point nextPosition = new Point(snake.get(0).getGridLocation());
+		Point nextPosition = null; // = new Point(snake.get(0).getGridLocation());
 		switch(dir) {
 			case UP:
 				nextPosition.translate(0, -1);
@@ -88,5 +96,17 @@ public class Player {
 	}
 	
 	
+    public void assignPanel(JPanel panel, String playerOwner){
+      //  setBorder(BorderFactory.createTitledBorder(playerOwner));
+
+        panel.add(colorLabel);
+        panel.add(colorField);
+        panel.add(roundLabel);
+        panel.add(roundWins);
+        panel.add(gameLabel);
+        panel.add(gameWins);
+
+        //add(panel);
+    }
 
 }
