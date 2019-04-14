@@ -9,4 +9,8 @@ public class Snakebody extends Tile{
 	public void display(){
 
 	}
+
+	public Point getGridLocation(){
+		return gridPoint;
+	}
 }

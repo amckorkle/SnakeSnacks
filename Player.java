@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Vector;
 
 public class Player {
     private int roundScore = 0;
@@ -12,8 +13,10 @@ public class Player {
     private JLabel roundLabel;
     private JLabel gameLabel;
 	private String playerOwner;
+	private Boolean justAteFood = false;
 
-	private Snakebody snake[] = new Snakebody[0];
+	private Vector<Snakebody> snake = new Vector<Snakebody>();
+
 	public static enum Direction {UP, RIGHT, DOWN, LEFT};
 	private Direction curDir = Direction.UP;
 
@@ -23,8 +26,9 @@ public class Player {
         panel.setLayout(new GridLayout(3, 1));
 
         colorLabel = new JLabel("COLOR: ");
-        roundLabel = new JLabel("ROUND SCORE: ") ;
-
+		roundLabel = new JLabel("ROUND SCORE: ") ;
+		
+		
 
 	
     }
@@ -44,6 +48,45 @@ public class Player {
 		}
 	}
 
+	public void doTimeStep(){
+		moveSnakeForward();
+	}
+
+	private void moveSnakeForward(){
+		Point nextHeadPos = getNextHeadPosition(snake, curDir);
+
+		// A new body piece in the front
+		//  and remove the old one
+		// idx 0 is the head of the snake
+		snake.insertElementAt(new Snakebody(nextHeadPos), 0);
+
+		// if the snake just ate food, you don't need to shrink
+		if(justAteFood){
+			justAteFood = false;
+		} else {
+			snake.remove(snake.size() - 1);
+		}
+	}
+
+	private static Point getNextHeadPosition(Vector<Snakebody> snake, Direction dir){
+		Point nextPosition = new Point(snake.get(0).getGridLocation());
+		switch(dir) {
+			case UP:
+				nextPosition.translate(0, -1);
+				break;
+			case RIGHT:
+				nextPosition.translate(1, 0);
+				break;
+			case DOWN:
+				nextPosition.translate(0, 1);
+				break;
+			case LEFT:
+				nextPosition.translate(-1, 0);
+				break;
+		}
+		return nextPosition;
+	}
+	
 	
 
 }

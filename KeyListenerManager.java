@@ -7,7 +7,7 @@ public class KeyListenerManager implements KeyListener {
 
 	public void keyPressed(KeyEvent e){
 		String key = KeyEvent.getKeyText(e.getKeyCode());
-		System.out.println(key);
+
 		if(keyCommands.containsKey(key)){
 			keyCommands.get(key).run();
 		}

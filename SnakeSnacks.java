@@ -10,6 +10,7 @@ public class SnakeSnacks extends JFrame{
 	private Tile[][] gameGrid;
 	private KeyListenerManager keyMngr = new KeyListenerManager();
 	private Player p1 = new Player("hi");
+	private Timer timer;
 
 	public SnakeSnacks(){
 		setTitle("SnakeSnacks");
@@ -17,16 +18,14 @@ public class SnakeSnacks extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		addKeyListener(keyMngr);
 		
-
+		timer = new Timer(60, new timerListener());
 		
 		
 		
 		setVisible(true);
 	}
 	
-	public void redrawGameGrid(){
 
-	}
 
 	private void assignWASDControls(Player p){
 		keyMngr.addKeyCommand("W", () -> p.setDirection(Player.Direction.UP));
@@ -40,6 +39,12 @@ public class SnakeSnacks extends JFrame{
 		keyMngr.addKeyCommand("Left", () -> p.setDirection(Player.Direction.LEFT));
 		keyMngr.addKeyCommand("Down", () -> p.setDirection(Player.Direction.DOWN));
 		keyMngr.addKeyCommand("Right", () -> p.setDirection(Player.Direction.RIGHT));
+	}
+
+	private class timerListener implements ActionListener{
+		public void actionPerformed(ActionEvent e){
+			//player.timeStep(); or equivalent
+		}
 	}
 	
 	public static void main(String[] args){
