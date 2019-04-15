@@ -17,8 +17,8 @@ public class Menu extends JPanel{
         exit = new JButton("EXIT");
         exit.addActionListener(new ExitButtonListener());
 
-        panel.add(play, BorderLayout.WEST);
-        panel.add(exit, BorderLayout.EAST);
+        panel.add(play, BorderLayout.NORTH);
+        panel.add(exit, BorderLayout.SOUTH);
 
         add(panel);
     }
