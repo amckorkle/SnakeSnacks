@@ -16,6 +16,8 @@ public class SnakeSnacks extends JFrame{
 	private Tile food;
 	private Tile snakeBody;
 	private Tile wall;
+	private int i = 0;
+	private int j = 0;
 
 	
 	public SnakeSnacks(){
@@ -29,6 +31,7 @@ public class SnakeSnacks extends JFrame{
 		food = new Food();
 		wall = new Wall();
 		snakeBody  = new Snakebody();
+		gameGrid = new Tile[WINDOW_W][WINDOW_H];
 		panel1 = new Player("Player 1");
 		panel2 = new Player("Player 2");
 		playerPanel.add(panel1, BorderLayout.SOUTH);
@@ -49,7 +52,15 @@ public class SnakeSnacks extends JFrame{
 		super.paint(g);
 		food.display(g, 20, 20);
 		snakeBody.display(g, 7, 6);
-		wall.display(g, 0, 0);
+		for(i = 0; i < (WINDOW_W / 40); i++){
+			for(j = 0; j < ((WINDOW_H / 40) - 1); j++){
+				if(i == 0 || i == ((WINDOW_W / 40) - 1) || j == 0 || j == ((WINDOW_H / 40) - 2)){
+						wall.display(g, i, j);
+					}
+				//wall.display(g, j, i);
+			}
+			System.out.println(i);
+		}
 
 
 	}
