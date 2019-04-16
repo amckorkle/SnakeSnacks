@@ -19,9 +19,7 @@ public class SnakeSnacks extends JFrame {
 	private JPanel playerPanel;
 	private Menu menu;
 	private Tile food;
-	private Tile wall;
-	private int i = 0;
-	private int j = 0;
+
 
 	public SnakeSnacks() {
 		setTitle("SnakeSnacks");
@@ -35,7 +33,6 @@ public class SnakeSnacks extends JFrame {
 		playerPanel = new JPanel();
 		menu = new Menu();
 		food = new Food();
-		wall = new Wall();
 
 		gameboard = new Gameboard(keyMngr);
 		add(gameboard);
@@ -48,6 +45,7 @@ public class SnakeSnacks extends JFrame {
 		players.add(panel2);
 
 		initPlayerSnakes();
+		initWall();
 
 		assignWASDControls(panel1);
 		panel1.setColor(Color.GREEN);
@@ -87,6 +85,16 @@ public class SnakeSnacks extends JFrame {
 		}
 	}
 
+	private void initWall(){
+		for (int i = 0; i < (WINDOW_W / 40); i++) {
+			for (int j = 0; j < ((WINDOW_H / 40) - 4); j++) {
+				if (i == 0 || i == ((WINDOW_W / 40) - 1) || j == 0 || j == ((WINDOW_H / 40) - 5)) {
+					gameboard.gameGrid[i][j] = new Wall();
+				}
+			}
+		}
+	}
+
 	private class timerListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			for (Player p : players) {
@@ -101,14 +109,7 @@ public class SnakeSnacks extends JFrame {
 		super.paint(g);
 		food.display(g, 9, 9);
 
-		for (i = 0; i < (WINDOW_W / 40); i++) {
-			for (j = 0; j < ((WINDOW_H / 40) - 4); j++) {
-				if (i == 0 || i == ((WINDOW_W / 40) - 1) || j == 0 || j == ((WINDOW_H / 40) - 5)) {
-					gameboard.gameGrid[i][j] = wall;
-					wall.display(g, i, j);
-				}
-			}
-		}
+	
 	}
 
 	public static void main(String[] args) {
