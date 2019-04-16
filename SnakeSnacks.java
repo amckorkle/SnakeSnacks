@@ -10,7 +10,7 @@ public class SnakeSnacks extends JFrame {
 	private Gameboard gameboard;
 	private KeyListenerManager keyMngr;
 
-	private Timer timer;
+	public static Timer timer;
 
 	private Player panel1;
 	private Player panel2;
@@ -54,7 +54,7 @@ public class SnakeSnacks extends JFrame {
 		assignArrowKeysControls(panel2);
 		panel2.setColor(Color.RED);
 
-		timer.start();
+		//timer.start();
 
 		playerPanel.add(panel1, BorderLayout.EAST);
 		playerPanel.add(panel2, BorderLayout.WEST);
