@@ -16,6 +16,9 @@ public class Player extends JPanel {
     private JLabel gameLabel;
     private String playerOwner;
     private Boolean justAteFood = false;
+    private Gameboard gb;
+    private Color snakeColor;
+    private Point startPoint;
 
     private Vector<Snakebody> snake = new Vector<Snakebody>();
 
@@ -23,9 +26,9 @@ public class Player extends JPanel {
         UP, RIGHT, DOWN, LEFT
     };
 
-    private Direction curDir = Direction.UP;
+    private Direction curDir = Direction.DOWN;
 
-    public Player(String player) {
+    public Player(String player, Point startPoint, Gameboard gameboard) {
         playerOwner = player;
         panel = new JPanel();
         panel.setLayout(new GridLayout(3, 1));
@@ -39,6 +42,10 @@ public class Player extends JPanel {
         gameWins = new JTextField(8);
         gameWins.setEditable(false);
 
+        this.gb = gameboard;
+
+        this.startPoint = startPoint;
+
         assignPanel(panel, playerOwner);
 
     }
@@ -48,38 +55,58 @@ public class Player extends JPanel {
     }
 
     public void setDirection(Direction newOrient) {
+        System.out.println("set dir");
         boolean isSameDir = curDir == newOrient;
         boolean isOppositeDir = curDir.ordinal() == (newOrient.ordinal() + 2) % 4;
-        if (isSameDir || isOppositeDir) // don't want to go directly backwards
-            System.out.println("nah");
-        else {
+
+        if (!(isSameDir || isOppositeDir)) {
             curDir = newOrient;
             System.out.println(curDir);
         }
     }
 
-    public void doTimeStep() {
-        moveSnakeForward();
+    public void display(Graphics g) {
+        System.out.println("waht is this");
+        for (Snakebody t : snake) {
+            t.display(g, t.getX(), t.getY());
+        }
     }
 
-    private void moveSnakeForward() {
-        // Point nextHeadPos = getNextHeadPosition(snake, curDir);
+    public void setColor(Color c) {
+        snakeColor = c;
+    }
+
+    public Snakebody initSnake() {
+        Snakebody head = new Snakebody(startPoint, snakeColor);
+        snake.add(head);
+        return head;
+    }
+
+    public Snakebody moveSnakeForward() {
+        Point nextHeadPos = getNextHeadPosition(snake, curDir);
+        Snakebody nextHeadPiece = new Snakebody(nextHeadPos, snakeColor);
 
         // A new body piece in the front
         // and remove the old one
         // idx 0 is the head of the snake
-        // snake.insertElementAt(new Snakebody(nextHeadPos), 0);
+        snake.insertElementAt(nextHeadPiece, 0);
 
         // if the snake just ate food, you don't need to shrink
         if (justAteFood) {
             justAteFood = false;
+
         } else {
-            snake.remove(snake.size() - 1);
+
+            Snakebody removed = snake.remove(snake.size() - 1);
+            gb.deleteTileAtPoint(removed.getX(), removed.getY());
         }
+
+        return nextHeadPiece;
     }
 
     private static Point getNextHeadPosition(Vector<Snakebody> snake, Direction dir) {
-        Point nextPosition = null; // = new Point(snake.get(0).getGridLocation());
+        Point nextPosition = new Point(snake.get(0).getPosition());
+
         switch (dir) {
         case UP:
             nextPosition.translate(0, -1);
@@ -95,6 +122,10 @@ public class Player extends JPanel {
             break;
         }
         return nextPosition;
+    }
+
+    public void eatFood() {
+        justAteFood = true;
     }
 
     public void assignPanel(JPanel panel, String playerOwner) {
