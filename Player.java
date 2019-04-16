@@ -17,6 +17,8 @@ public class Player {
 	private String playerOwner;
 	private Boolean justAteFood = false;
 	private Gameboard gb;
+	private Color snakeColor;
+	private Point startPoint;
 
 	private Vector<Snakebody> snake = new Vector<Snakebody>();
 
@@ -26,7 +28,7 @@ public class Player {
 
 	private Direction curDir = Direction.DOWN;
 
-	public Player(String player, Gameboard gameboard) {
+	public Player(String player, Point startPoint, Gameboard gameboard) {
 		playerOwner = player;
 		panel = new JPanel();
 		panel.setLayout(new GridLayout(3, 1));
@@ -41,6 +43,8 @@ public class Player {
 		gameWins.setEditable(false);
 
 		this.gb = gameboard;
+
+		this.startPoint = startPoint;
 
 		assignPanel(panel, playerOwner);
 
@@ -61,20 +65,25 @@ public class Player {
 	}
 
 	public void display(Graphics g) {
+		System.out.println("waht is this");
 		for (Snakebody t : snake) {
 			t.display(g, t.getX(), t.getY());
 		}
 	}
 
-	public Snakebody initSnake(Point startPoint) {
-		Snakebody head = new Snakebody(startPoint);
+	public void setColor(Color c) {
+		snakeColor = c;
+	}
+
+	public Snakebody initSnake() {
+		Snakebody head = new Snakebody(startPoint, snakeColor);
 		snake.add(head);
 		return head;
 	}
 
 	public Snakebody moveSnakeForward() {
 		Point nextHeadPos = getNextHeadPosition(snake, curDir);
-		Snakebody nextHeadPiece = new Snakebody(nextHeadPos);
+		Snakebody nextHeadPiece = new Snakebody(nextHeadPos, snakeColor);
 
 		// A new body piece in the front
 		// and remove the old one

@@ -2,6 +2,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Vector;
 
 public class SnakeSnacks extends JFrame {
 	public static final int WINDOW_W = 1000;
@@ -13,6 +14,7 @@ public class SnakeSnacks extends JFrame {
 
 	private Player panel1;
 	private Player panel2;
+	private Vector<Player> players;
 	private JPanel gamePanel;
 	private JPanel playerPanel;
 	private Menu menu;
@@ -36,16 +38,21 @@ public class SnakeSnacks extends JFrame {
 		gameboard = new Gameboard();
 		add(gameboard);
 
-		panel1 = new Player("Player 1", gameboard);
+		panel1 = new Player("Player 1", new Point(1, 1), gameboard);
+		panel2 = new Player("P2", new Point(10, 10), gameboard);
+		players = new Vector<Player>();
+		players.add(panel1);
+		players.add(panel2);
 
-		Snakebody head = panel1.initSnake(new Point(1, 1));
-		gameboard.addToGameGrid(head, head.getX(), head.getY());
-
-		// panel2 = new Player("Player 2");
+		initPlayerSnakes();
 
 		// add(playerPanel);
 		// add(gamePanel);
 		assignWASDControls(panel1);
+		panel1.setColor(Color.GREEN);
+		assignArrowKeysControls(panel2);
+		panel2.setColor(Color.RED);
+
 		timer.start();
 		setVisible(true);
 	}
@@ -65,10 +72,19 @@ public class SnakeSnacks extends JFrame {
 		keyMngr.addKeyCommand("Right", () -> p.setDirection(Player.Direction.RIGHT));
 	}
 
+	private void initPlayerSnakes() {
+		for (Player p : players) {
+			Snakebody head = p.initSnake();
+			gameboard.addToGameGrid(head, head.getX(), head.getY());
+		}
+	}
+
 	private class timerListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			Snakebody newBody = panel1.moveSnakeForward();
-			gameboard.addToGameGrid(newBody, newBody.getX(), newBody.getY());
+			for (Player p : players) {
+				Snakebody newBody = p.moveSnakeForward();
+				gameboard.addToGameGrid(newBody, newBody.getX(), newBody.getY());
+			}
 
 			gameboard.repaint();
 		}
