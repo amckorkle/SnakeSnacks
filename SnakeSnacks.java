@@ -14,16 +14,17 @@ public class SnakeSnacks extends JFrame{
 
 	private Player panel1;
 	private Player panel2;
-	private JPanel gamePanel;
 	private JPanel playerPanel;
 	private Menu menu;
 	private Tile food;
 	private Tile snakeBody;
 	private Tile wall;
+	private int i = 0;
+	private int j = 0;
 
 	
 	public SnakeSnacks(){
-		setTitle("SnakeSnacks");
+		//setTitle("SnakeSnacks");
 		setSize(WINDOW_W, WINDOW_H);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		addKeyListener(keyMngr);
@@ -32,17 +33,21 @@ public class SnakeSnacks extends JFrame{
 		
 		
 
-		gamePanel = new JPanel();
 		playerPanel = new JPanel();
 		menu = new Menu();
 		food = new Food();
 		wall = new Wall();
 		snakeBody  = new Snakebody();
+		gameGrid = new Tile[WINDOW_W][WINDOW_H];
 		panel1 = new Player("Player 1");
 		panel2 = new Player("Player 2");
-		
-		//add(playerPanel);
-		//add(gamePanel);
+
+		playerPanel.add(panel1, BorderLayout.EAST);
+        playerPanel.add(panel2, BorderLayout.WEST);
+		playerPanel.add(menu, BorderLayout.SOUTH);
+
+		add(playerPanel, BorderLayout.SOUTH);
+
 		
 		setVisible(true);
 	}
@@ -71,9 +76,16 @@ public class SnakeSnacks extends JFrame{
 
 	public void paint(Graphics g){
 		super.paint(g);
-		food.display(g, 20, 20);
+		food.display(g, 9, 9);
 		snakeBody.display(g, 7, 6);
-		wall.display(g, 10, 10);
+		for(i = 0; i < (WINDOW_W / 40); i++){
+			for(j = 0; j < ((WINDOW_H / 40) - 4); j++){
+				if(i == 0 || i == ((WINDOW_W / 40) - 1) || j == 0 || j == ((WINDOW_H / 40) - 5)){
+					gameGrid[i][j] = wall;
+					wall.display(g, i, j);
+				}
+			}
+		}
 
 
 	}
