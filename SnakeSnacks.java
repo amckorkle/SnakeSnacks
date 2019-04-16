@@ -8,7 +8,7 @@ public class SnakeSnacks extends JFrame {
 	public static final int WINDOW_W = 1000;
 	public static final int WINDOW_H = 1000;
 	private Gameboard gameboard;
-	private KeyListenerManager keyMngr = new KeyListenerManager();
+	private KeyListenerManager keyMngr;
 
 	private Timer timer;
 
@@ -20,40 +20,48 @@ public class SnakeSnacks extends JFrame {
 	private Menu menu;
 	private Tile food;
 	private Tile wall;
+	private int i = 0;
+	private int j = 0;
 
 	public SnakeSnacks() {
 		setTitle("SnakeSnacks");
 		setSize(WINDOW_W, WINDOW_H);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		keyMngr = new KeyListenerManager();
 		addKeyListener(keyMngr);
 
 		timer = new Timer(200, new timerListener());
 
-		gamePanel = new JPanel();
 		playerPanel = new JPanel();
 		menu = new Menu();
 		food = new Food();
 		wall = new Wall();
 
-		gameboard = new Gameboard();
+		gameboard = new Gameboard(keyMngr);
 		add(gameboard);
 
 		panel1 = new Player("Player 1", new Point(1, 1), gameboard);
-		panel2 = new Player("P2", new Point(10, 10), gameboard);
+		panel2 = new Player("Player 2", new Point(10, 10), gameboard);
+
 		players = new Vector<Player>();
 		players.add(panel1);
 		players.add(panel2);
 
 		initPlayerSnakes();
 
-		// add(playerPanel);
-		// add(gamePanel);
 		assignWASDControls(panel1);
 		panel1.setColor(Color.GREEN);
 		assignArrowKeysControls(panel2);
 		panel2.setColor(Color.RED);
 
 		timer.start();
+
+		playerPanel.add(panel1, BorderLayout.EAST);
+		playerPanel.add(panel2, BorderLayout.WEST);
+		playerPanel.add(menu, BorderLayout.SOUTH);
+
+		add(playerPanel, BorderLayout.SOUTH);
+
 		setVisible(true);
 	}
 
@@ -85,8 +93,21 @@ public class SnakeSnacks extends JFrame {
 				Snakebody newBody = p.moveSnakeForward();
 				gameboard.addToGameGrid(newBody, newBody.getX(), newBody.getY());
 			}
-
 			gameboard.repaint();
+		}
+	}
+
+	public void paint(Graphics g) {
+		super.paint(g);
+		food.display(g, 9, 9);
+
+		for (i = 0; i < (WINDOW_W / 40); i++) {
+			for (j = 0; j < ((WINDOW_H / 40) - 4); j++) {
+				if (i == 0 || i == ((WINDOW_W / 40) - 1) || j == 0 || j == ((WINDOW_H / 40) - 5)) {
+					gameboard.gameGrid[i][j] = wall;
+					wall.display(g, i, j);
+				}
+			}
 		}
 	}
 
@@ -98,8 +119,10 @@ public class SnakeSnacks extends JFrame {
 class Gameboard extends JPanel {
 	Tile[][] gameGrid;
 
-	public Gameboard() {
-		gameGrid = new Tile[20][20];
+	public Gameboard(KeyListenerManager keyMngr) {
+		gameGrid = new Tile[SnakeSnacks.WINDOW_W][SnakeSnacks.WINDOW_H];
+		addKeyListener(keyMngr);
+		setFocusable(true);
 	}
 
 	public void addToGameGrid(Tile tile, int x, int y) {
