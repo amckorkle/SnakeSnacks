@@ -5,7 +5,7 @@ import java.awt.event.*;
 import java.util.Vector;
 
 public class SnakeSnacks extends JFrame {
-	public static final int WINDOW_W = 1000;
+	public static final int WINDOW_W = 1020;
 	public static final int WINDOW_H = 1000;
 	private Gameboard gameboard;
 	private KeyListenerManager keyMngr;
@@ -86,9 +86,12 @@ public class SnakeSnacks extends JFrame {
 	}
 
 	private void initWall(){
-		for (int i = 0; i < (WINDOW_W / 40); i++) {
-			for (int j = 0; j < ((WINDOW_H / 40) - 4); j++) {
-				if (i == 0 || i == ((WINDOW_W / 40) - 1) || j == 0 || j == ((WINDOW_H / 40) - 5)) {
+		int height = gameboard.getBoardHeight();
+		int width = gameboard.getBoardWidth();
+
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				if (i == 0 || i == height-1 || j == 0 || j == width-1) {
 					gameboard.gameGrid[i][j] = new Wall();
 				}
 			}
@@ -119,9 +122,12 @@ public class SnakeSnacks extends JFrame {
 
 class Gameboard extends JPanel {
 	Tile[][] gameGrid;
+	private static int GG_H = 20;
+	private static int GG_W = 25;
+	
 
 	public Gameboard(KeyListenerManager keyMngr) {
-		gameGrid = new Tile[SnakeSnacks.WINDOW_W][SnakeSnacks.WINDOW_H];
+		gameGrid = new Tile[GG_H][GG_W];
 		addKeyListener(keyMngr);
 		setFocusable(true);
 	}
@@ -148,6 +154,15 @@ class Gameboard extends JPanel {
 	// set the tile at the given location to null
 	public void deleteTileAtPoint(int x, int y) {
 		gameGrid[y][x] = null;
+	}
+
+	public int getBoardWidth(){
+		return GG_W;
+	}
+
+	
+	public int getBoardHeight(){
+		return GG_H;
 	}
 
 }
