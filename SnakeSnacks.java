@@ -20,7 +20,6 @@ public class SnakeSnacks extends JFrame {
 	private Menu menu;
 	private Tile food;
 
-
 	public SnakeSnacks() {
 		setTitle("SnakeSnacks");
 		setSize(WINDOW_W, WINDOW_H);
@@ -28,7 +27,7 @@ public class SnakeSnacks extends JFrame {
 		keyMngr = new KeyListenerManager();
 		addKeyListener(keyMngr);
 
-		timer = new Timer(200, new timerListener());
+		timer = new Timer(400, new timerListener());
 
 		playerPanel = new JPanel();
 		menu = new Menu();
@@ -85,13 +84,13 @@ public class SnakeSnacks extends JFrame {
 		}
 	}
 
-	private void initWall(){
+	private void initWall() {
 		int height = gameboard.getBoardHeight();
 		int width = gameboard.getBoardWidth();
 
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
-				if (i == 0 || i == height-1 || j == 0 || j == width-1) {
+				if (i == 0 || i == height - 1 || j == 0 || j == width - 1) {
 					gameboard.gameGrid[i][j] = new Wall();
 				}
 			}
@@ -100,8 +99,12 @@ public class SnakeSnacks extends JFrame {
 
 	private class timerListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			CollisionManager collMngr = new CollisionManager(gameboard);
+
 			for (Player p : players) {
 				Snakebody newBody = p.moveSnakeForward();
+				collMngr.registerSnakeMovement(p);
+
 				gameboard.addToGameGrid(newBody, newBody.getX(), newBody.getY());
 			}
 			gameboard.repaint();
@@ -112,57 +115,9 @@ public class SnakeSnacks extends JFrame {
 		super.paint(g);
 		food.display(g, 9, 9);
 
-	
 	}
 
 	public static void main(String[] args) {
 		new SnakeSnacks();
 	}
-}
-
-class Gameboard extends JPanel {
-	Tile[][] gameGrid;
-	private static int GG_H = 20;
-	private static int GG_W = 25;
-	
-
-	public Gameboard(KeyListenerManager keyMngr) {
-		gameGrid = new Tile[GG_H][GG_W];
-		addKeyListener(keyMngr);
-		setFocusable(true);
-	}
-
-	public void addToGameGrid(Tile tile, int x, int y) {
-		gameGrid[y][x] = tile;
-	}
-
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-
-		// For each tile, display it if it exists at all
-		Tile curTile;
-		for (int r = 0; r < gameGrid.length; r++) {
-			for (int c = 0; c < gameGrid[0].length; c++) {
-				curTile = gameGrid[r][c];
-				if (curTile != null) {
-					curTile.display(g, c, r);
-				}
-			}
-		}
-	}
-
-	// set the tile at the given location to null
-	public void deleteTileAtPoint(int x, int y) {
-		gameGrid[y][x] = null;
-	}
-
-	public int getBoardWidth(){
-		return GG_W;
-	}
-
-	
-	public int getBoardHeight(){
-		return GG_H;
-	}
-
 }
