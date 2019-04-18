@@ -79,6 +79,10 @@ public class Player extends JPanel {
         snakeColor = c;
     }
 
+    public String getName() {
+        return playerOwner;
+    }
+
     public Snakebody initSnake() {
         Snakebody head = new Snakebody(startPoint, snakeColor);
         snake.add(head);

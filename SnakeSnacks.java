@@ -2,6 +2,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Set;
 import java.util.Vector;
 
 public class SnakeSnacks extends JFrame {
@@ -27,11 +28,10 @@ public class SnakeSnacks extends JFrame {
 		keyMngr = new KeyListenerManager();
 		addKeyListener(keyMngr);
 
-		timer = new Timer(400, new timerListener());
+		timer = new Timer(200, new timerListener());
 
 		playerPanel = new JPanel();
 		menu = new Menu();
-		food = new Food();
 
 		gameboard = new Gameboard(keyMngr);
 		add(gameboard);
@@ -67,7 +67,6 @@ public class SnakeSnacks extends JFrame {
 		keyMngr.addKeyCommand("A", () -> p.setDirection(Player.Direction.LEFT));
 		keyMngr.addKeyCommand("S", () -> p.setDirection(Player.Direction.DOWN));
 		keyMngr.addKeyCommand("D", () -> p.setDirection(Player.Direction.RIGHT));
-		keyMngr.addKeyCommand("Space", () -> p.eatFood());
 	}
 
 	private void assignArrowKeysControls(Player p) {
@@ -97,23 +96,52 @@ public class SnakeSnacks extends JFrame {
 		}
 	}
 
+	public void collisionHasOccured(Set<Player> collidedPlayers) {
+		timer.stop();
+		System.out.println("Game end due to collision");
+		System.out.print("Losers: ");
+
+		for (Player p : collidedPlayers) {
+			System.out.print(p.getName() + ", ");
+		}
+		System.out.println();
+
+	}
+
 	private class timerListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			CollisionManager collMngr = new CollisionManager(gameboard);
+			Vector<Snakebody> newSnakebodies = new Vector<Snakebody>();
 
 			for (Player p : players) {
 				Snakebody newBody = p.moveSnakeForward();
 				collMngr.registerSnakeMovement(p);
 
-				gameboard.addToGameGrid(newBody, newBody.getX(), newBody.getY());
+				newSnakebodies.add(newBody);
 			}
-			gameboard.repaint();
+
+			Set<Player> collidedPlayers = collMngr.resolveCollisions();
+
+			if (collidedPlayers.isEmpty()) {
+
+				for (Snakebody body : newSnakebodies) {
+					gameboard.addToGameGrid(body, body.getX(), body.getY());
+				}
+
+				// Should probably be at the end.
+				// Here for sake of demo
+				gameboard.repaint();
+
+			} else {
+				collisionHasOccured(collidedPlayers);
+				// then reset everthing
+			}
+
 		}
 	}
 
 	public void paint(Graphics g) {
 		super.paint(g);
-		food.display(g, 9, 9);
 
 	}
 

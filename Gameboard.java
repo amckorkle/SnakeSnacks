@@ -1,15 +1,22 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 
 public class Gameboard extends JPanel {
     Tile[][] gameGrid;
     private static int GG_H = 20;
     private static int GG_W = 25;
+    private Point foodLocation;
+    private Random rnd;
 
     public Gameboard(KeyListenerManager keyMngr) {
         gameGrid = new Tile[GG_H][GG_W];
+        rnd = new Random();
+        foodLocation = new Point(-1, -1);
+
         addKeyListener(keyMngr);
         setFocusable(true);
+        placeFood();
     }
 
     public void addToGameGrid(Tile tile, int x, int y) {
@@ -34,6 +41,25 @@ public class Gameboard extends JPanel {
     // set the tile at the given location to null
     public void deleteTileAtPoint(int x, int y) {
         gameGrid[y][x] = null;
+    }
+
+    public void foodEaten() {
+        deleteTileAtPoint((int) foodLocation.getX(), (int) foodLocation.getY());
+        placeFood();
+    }
+
+    private void placeFood() {
+        int x = rnd.nextInt(GG_W);
+        int y = rnd.nextInt(GG_H);
+
+        while (gameGrid[y][x] != null) {
+            x = rnd.nextInt(GG_W);
+            y = rnd.nextInt(GG_H);
+        }
+
+        foodLocation.setLocation(x, y);
+        System.out.println(x + ", " + y);
+        addToGameGrid(new Food(), x, y);
     }
 
     public int getBoardWidth() {
