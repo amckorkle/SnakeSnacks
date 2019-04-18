@@ -2,10 +2,11 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Set;
 import java.util.Vector;
 
 public class SnakeSnacks extends JFrame {
-	public static final int WINDOW_W = 1000;
+	public static final int WINDOW_W = 1020;
 	public static final int WINDOW_H = 1000;
 	private Gameboard gameboard;
 	private KeyListenerManager keyMngr;
@@ -19,9 +20,6 @@ public class SnakeSnacks extends JFrame {
 	private JPanel playerPanel;
 	private Menu menu;
 	private Tile food;
-	private Tile wall;
-	private int i = 0;
-	private int j = 0;
 
 	public SnakeSnacks() {
 		setTitle("SnakeSnacks");
@@ -34,8 +32,6 @@ public class SnakeSnacks extends JFrame {
 
 		playerPanel = new JPanel();
 		menu = new Menu();
-		food = new Food();
-		wall = new Wall();
 
 		gameboard = new Gameboard(keyMngr);
 		add(gameboard);
@@ -48,6 +44,7 @@ public class SnakeSnacks extends JFrame {
 		players.add(panel2);
 
 		initPlayerSnakes();
+		initWall();
 
 		assignWASDControls(panel1);
 		panel1.setColor(Color.GREEN);
@@ -70,7 +67,6 @@ public class SnakeSnacks extends JFrame {
 		keyMngr.addKeyCommand("A", () -> p.setDirection(Player.Direction.LEFT));
 		keyMngr.addKeyCommand("S", () -> p.setDirection(Player.Direction.DOWN));
 		keyMngr.addKeyCommand("D", () -> p.setDirection(Player.Direction.RIGHT));
-		keyMngr.addKeyCommand("Space", () -> p.eatFood());
 	}
 
 	private void assignArrowKeysControls(Player p) {
@@ -87,66 +83,69 @@ public class SnakeSnacks extends JFrame {
 		}
 	}
 
+	private void initWall() {
+		int height = gameboard.getBoardHeight();
+		int width = gameboard.getBoardWidth();
+
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				if (i == 0 || i == height - 1 || j == 0 || j == width - 1) {
+					gameboard.gameGrid[i][j] = new Wall();
+				}
+			}
+		}
+	}
+
+	public void collisionHasOccured(Set<Player> collidedPlayers) {
+		timer.stop();
+		System.out.println("Game end due to collision");
+		System.out.print("Losers: ");
+
+		for (Player p : collidedPlayers) {
+			System.out.print(p.getName() + ", ");
+		}
+		System.out.println();
+
+	}
+
 	private class timerListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			CollisionManager collMngr = new CollisionManager(gameboard);
+			Vector<Snakebody> newSnakebodies = new Vector<Snakebody>();
+
 			for (Player p : players) {
 				Snakebody newBody = p.moveSnakeForward();
-				gameboard.addToGameGrid(newBody, newBody.getX(), newBody.getY());
+				collMngr.registerSnakeMovement(p);
+
+				newSnakebodies.add(newBody);
 			}
-			gameboard.repaint();
+
+			Set<Player> collidedPlayers = collMngr.resolveCollisions();
+
+			if (collidedPlayers.isEmpty()) {
+
+				for (Snakebody body : newSnakebodies) {
+					gameboard.addToGameGrid(body, body.getX(), body.getY());
+				}
+
+				// Should probably be at the end.
+				// Here for sake of demo
+				gameboard.repaint();
+
+			} else {
+				collisionHasOccured(collidedPlayers);
+				// then reset everthing
+			}
+
 		}
 	}
 
 	public void paint(Graphics g) {
 		super.paint(g);
-		food.display(g, 9, 9);
 
-		for (i = 0; i < (WINDOW_W / 40); i++) {
-			for (j = 0; j < ((WINDOW_H / 40) - 4); j++) {
-				if (i == 0 || i == ((WINDOW_W / 40) - 1) || j == 0 || j == ((WINDOW_H / 40) - 5)) {
-					gameboard.gameGrid[i][j] = wall;
-					wall.display(g, i, j);
-				}
-			}
-		}
 	}
 
 	public static void main(String[] args) {
 		new SnakeSnacks();
 	}
-}
-
-class Gameboard extends JPanel {
-	Tile[][] gameGrid;
-
-	public Gameboard(KeyListenerManager keyMngr) {
-		gameGrid = new Tile[SnakeSnacks.WINDOW_W][SnakeSnacks.WINDOW_H];
-		addKeyListener(keyMngr);
-		setFocusable(true);
-	}
-
-	public void addToGameGrid(Tile tile, int x, int y) {
-		gameGrid[y][x] = tile;
-	}
-
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-
-		// For each tile, display it if it exists at all
-		Tile curTile;
-		for (int r = 0; r < gameGrid.length; r++) {
-			for (int c = 0; c < gameGrid[0].length; c++) {
-				curTile = gameGrid[r][c];
-				if (curTile != null) {
-					curTile.display(g, c, r);
-				}
-			}
-		}
-	}
-
-	// set the tile at the given location to null
-	public void deleteTileAtPoint(int x, int y) {
-		gameGrid[y][x] = null;
-	}
-
 }

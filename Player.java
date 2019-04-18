@@ -27,6 +27,7 @@ public class Player extends JPanel {
     };
 
     private Direction curDir = Direction.DOWN;
+    private Direction tempDir = Direction.DOWN;
 
     public Player(String player, Point startPoint, Gameboard gameboard) {
         playerOwner = player;
@@ -50,18 +51,20 @@ public class Player extends JPanel {
 
     }
 
+    public Snakebody getSnakebodyHead() {
+        return snake.get(0);
+    }
+
     public void incrementRoundWins(String playerOwner) {
         roundScore++;
     }
 
     public void setDirection(Direction newOrient) {
-        System.out.println("set dir");
         boolean isSameDir = curDir == newOrient;
         boolean isOppositeDir = curDir.ordinal() == (newOrient.ordinal() + 2) % 4;
 
         if (!(isSameDir || isOppositeDir)) {
-            curDir = newOrient;
-            System.out.println(curDir);
+            tempDir = newOrient;
         }
     }
 
@@ -76,6 +79,10 @@ public class Player extends JPanel {
         snakeColor = c;
     }
 
+    public String getName() {
+        return playerOwner;
+    }
+
     public Snakebody initSnake() {
         Snakebody head = new Snakebody(startPoint, snakeColor);
         snake.add(head);
@@ -83,6 +90,7 @@ public class Player extends JPanel {
     }
 
     public Snakebody moveSnakeForward() {
+        curDir = tempDir;
         Point nextHeadPos = getNextHeadPosition(snake, curDir);
         Snakebody nextHeadPiece = new Snakebody(nextHeadPos, snakeColor);
 
