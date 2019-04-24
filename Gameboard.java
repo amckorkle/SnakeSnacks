@@ -7,16 +7,17 @@ public class Gameboard extends JPanel {
     private static int GG_H = 20;
     private static int GG_W = 25;
     private Point foodLocation;
+    private Food food;
     private Random rnd;
 
     public Gameboard(KeyListenerManager keyMngr) {
         gameGrid = new Tile[GG_H][GG_W];
         rnd = new Random();
-        foodLocation = new Point(-1, -1);
+        foodLocation = new Point();
+        food = new Food();
 
         addKeyListener(keyMngr);
         setFocusable(true);
-        placeFood();
     }
 
     public void addToGameGrid(Tile tile, int x, int y) {
@@ -48,7 +49,7 @@ public class Gameboard extends JPanel {
         placeFood();
     }
 
-    private void placeFood() {
+    public void placeFood() {
         int x = rnd.nextInt(GG_W);
         int y = rnd.nextInt(GG_H);
 
@@ -59,7 +60,7 @@ public class Gameboard extends JPanel {
 
         foodLocation.setLocation(x, y);
         System.out.println(x + ", " + y);
-        addToGameGrid(new Food(), x, y);
+        addToGameGrid(food, x, y);
     }
 
     public int getBoardWidth() {

@@ -45,6 +45,7 @@ public class SnakeSnacks extends JFrame {
 
 		initPlayerSnakes();
 		initWall();
+		gameboard.placeFood();
 
 		assignWASDControls(panel1);
 		panel1.setColor(Color.GREEN);
