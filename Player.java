@@ -142,7 +142,6 @@ public class Player extends JPanel {
         switch (dir) {
         case UP:
             nextPosition.translate(0, -1);
-            System.out.println("i'm here");
             break;
         case RIGHT:
             nextPosition.translate(1, 0);
@@ -162,7 +161,7 @@ public class Player extends JPanel {
     }
 
     public void assignPanel(JPanel panel, String playerOwner) {
-        // setBorder(BorderFactory.createTitledBorder(playerOwner));
+        setBorder(BorderFactory.createTitledBorder(playerOwner));
 
         panel.add(colorLabel);
         panel.add(colorField);
