@@ -11,7 +11,7 @@ public class Player extends JPanel {
     private String[] colors = {"BLACK", "BLUE", "CYAN", "GRAY", "GREEN", "MAGENTA", "ORANGE", "PINK", "RED", "WHITE", "YELLOW"};
     private JTextField roundWins;
     private JTextField gameWins;
-    private JComboBox colorField;
+    private JComboBox<String> colorField;
     private JLabel colorLabel;
     private JLabel roundLabel;
     private JLabel gameLabel;
@@ -20,7 +20,7 @@ public class Player extends JPanel {
     private Gameboard gb;
     private Color snakeColor;
     private Point startPoint;
-    private Map map = new HashMap<String, Color>(); 
+    private Map<String, Color> map = new HashMap<String, Color>(); 
 
 
     private Vector<Snakebody> snake = new Vector<Snakebody>();
@@ -51,7 +51,8 @@ public class Player extends JPanel {
 
 
         colorLabel = new JLabel("COLOR: ");
-        colorField = new JComboBox(colors);
+		colorField = new JComboBox<String>(colors);
+		colorField.setFocusable(false);
         colorField.addActionListener(new ComboBoxListener());
         roundLabel = new JLabel("ROUND SCORE: ");
         roundWins = new JTextField(8);
@@ -87,7 +88,8 @@ public class Player extends JPanel {
 
     private class ComboBoxListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            System.out.println(colorField.getSelectedItem());
+			System.out.println(colorField.getSelectedItem());
+			setColor(map.get(colorField.getSelectedItem()));
             colorField.setEnabled(false);
         }
     }
