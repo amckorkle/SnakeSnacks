@@ -8,6 +8,7 @@ public class Menu extends JPanel{
     private JPanel panel;
 
     public Menu(){
+
         panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
@@ -32,7 +33,6 @@ public class Menu extends JPanel{
     private class PlayButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             System.out.println("Hello");
-            SnakeSnacks.timer.start();
         }
     }
 }

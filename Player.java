@@ -85,8 +85,15 @@ public class Player extends JPanel {
         }
     }
 
+    private class ComboBoxListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            System.out.println(colorField.getSelectedItem());
+            colorField.setEnabled(false);
+        }
+    }
+
     public void display(Graphics g) {
-        System.out.println("waht is this");
+        //System.out.println("waht is this");
         for (Snakebody t : snake) {
             t.display(g, t.getX(), t.getY());
         }
@@ -131,10 +138,11 @@ public class Player extends JPanel {
 
     private static Point getNextHeadPosition(Vector<Snakebody> snake, Direction dir) {
         Point nextPosition = new Point(snake.get(0).getPosition());
-
+        //System.out.println(dir);
         switch (dir) {
         case UP:
             nextPosition.translate(0, -1);
+            System.out.println("i'm here");
             break;
         case RIGHT:
             nextPosition.translate(1, 0);

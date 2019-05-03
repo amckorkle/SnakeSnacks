@@ -51,7 +51,7 @@ public class SnakeSnacks extends JFrame {
 		assignArrowKeysControls(panel2);
 		panel2.setColor(Color.RED);
 
-		//timer.start();
+		timer.start();
 
 		playerPanel.add(panel1, BorderLayout.EAST);
 		playerPanel.add(panel2, BorderLayout.WEST);
@@ -67,6 +67,7 @@ public class SnakeSnacks extends JFrame {
 		keyMngr.addKeyCommand("A", () -> p.setDirection(Player.Direction.LEFT));
 		keyMngr.addKeyCommand("S", () -> p.setDirection(Player.Direction.DOWN));
 		keyMngr.addKeyCommand("D", () -> p.setDirection(Player.Direction.RIGHT));
+		System.out.println("here i am");
 	}
 
 	private void assignArrowKeysControls(Player p) {
@@ -116,7 +117,6 @@ public class SnakeSnacks extends JFrame {
 			for (Player p : players) {
 				Snakebody newBody = p.moveSnakeForward();
 				collMngr.registerSnakeMovement(p);
-
 				newSnakebodies.add(newBody);
 			}
 
