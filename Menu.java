@@ -6,13 +6,18 @@ public class Menu extends JPanel{
     private JButton play;
     private JButton exit;
     private JPanel panel;
+    private Timer timer;
 
-    public Menu(){
+    public Menu(Timer timer){
+
+        this.timer = timer;
+
         panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
         play = new JButton("PLAY!");
         play.addActionListener(new PlayButtonListener());
+        play.setFocusable(false);
 
         exit = new JButton("EXIT");
         exit.addActionListener(new ExitButtonListener());
@@ -31,7 +36,7 @@ public class Menu extends JPanel{
 
     private class PlayButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Hello");
+            timer.start();
         }
     }
 }

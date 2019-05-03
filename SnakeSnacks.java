@@ -11,7 +11,7 @@ public class SnakeSnacks extends JFrame {
 	private Gameboard gameboard;
 	private KeyListenerManager keyMngr;
 
-	private Timer timer;
+	public static Timer timer;
 
 	private Player panel1;
 	private Player panel2;
@@ -31,7 +31,7 @@ public class SnakeSnacks extends JFrame {
 		timer = new Timer(200, new timerListener());
 
 		playerPanel = new JPanel();
-		menu = new Menu();
+		menu = new Menu(timer);
 
 		gameboard = new Gameboard(keyMngr);
 		add(gameboard);
@@ -52,7 +52,7 @@ public class SnakeSnacks extends JFrame {
 		assignArrowKeysControls(panel2);
 		panel2.setColor(Color.RED);
 
-		timer.start();
+		//timer.start();
 
 		playerPanel.add(panel1, BorderLayout.EAST);
 		playerPanel.add(panel2, BorderLayout.WEST);
@@ -61,6 +61,8 @@ public class SnakeSnacks extends JFrame {
 		add(playerPanel, BorderLayout.SOUTH);
 
 		setVisible(true);
+
+		requestFocus();
 	}
 
 	private void assignWASDControls(Player p) {
@@ -117,7 +119,6 @@ public class SnakeSnacks extends JFrame {
 			for (Player p : players) {
 				Snakebody newBody = p.moveSnakeForward();
 				collMngr.registerSnakeMovement(p);
-
 				newSnakebodies.add(newBody);
 			}
 

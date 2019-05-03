@@ -2,15 +2,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Vector;
 import java.awt.event.*;
+import java.util.*;
 
 public class Player extends JPanel {
     private int roundScore = 0;
     private int gameScore = 0;
     private JPanel panel;
-    private String color;
+    private String[] colors = {"BLACK", "BLUE", "CYAN", "GRAY", "GREEN", "MAGENTA", "ORANGE", "PINK", "RED", "WHITE", "YELLOW"};
     private JTextField roundWins;
     private JTextField gameWins;
-    private JTextField colorField;
+    private JComboBox colorField;
     private JLabel colorLabel;
     private JLabel roundLabel;
     private JLabel gameLabel;
@@ -19,6 +20,8 @@ public class Player extends JPanel {
     private Gameboard gb;
     private Color snakeColor;
     private Point startPoint;
+    private Map map = new HashMap<String, Color>(); 
+
 
     private Vector<Snakebody> snake = new Vector<Snakebody>();
 
@@ -34,8 +37,22 @@ public class Player extends JPanel {
         panel = new JPanel();
         panel.setLayout(new GridLayout(3, 1));
 
+        map.put(colors[0], Color.BLACK);
+        map.put(colors[1], Color.BLUE);
+        map.put(colors[2], Color.CYAN);
+        map.put(colors[3], Color.GRAY);
+        map.put(colors[4], Color.GREEN);
+        map.put(colors[5], Color.MAGENTA);
+        map.put(colors[6], Color.ORANGE);
+        map.put(colors[7], Color.PINK);
+        map.put(colors[8], Color.RED);
+        map.put(colors[9], Color.WHITE);
+        map.put(colors[10], Color.YELLOW);
+
+
         colorLabel = new JLabel("COLOR: ");
-        colorField = new JTextField(8);
+        colorField = new JComboBox(colors);
+        colorField.addActionListener(new ComboBoxListener());
         roundLabel = new JLabel("ROUND SCORE: ");
         roundWins = new JTextField(8);
         roundWins.setEditable(false);
@@ -68,8 +85,15 @@ public class Player extends JPanel {
         }
     }
 
+    private class ComboBoxListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            System.out.println(colorField.getSelectedItem());
+            colorField.setEnabled(false);
+        }
+    }
+
     public void display(Graphics g) {
-        System.out.println("waht is this");
+        //System.out.println("waht is this");
         for (Snakebody t : snake) {
             t.display(g, t.getX(), t.getY());
         }
@@ -114,7 +138,7 @@ public class Player extends JPanel {
 
     private static Point getNextHeadPosition(Vector<Snakebody> snake, Direction dir) {
         Point nextPosition = new Point(snake.get(0).getPosition());
-
+        //System.out.println(dir);
         switch (dir) {
         case UP:
             nextPosition.translate(0, -1);
@@ -137,7 +161,7 @@ public class Player extends JPanel {
     }
 
     public void assignPanel(JPanel panel, String playerOwner) {
-        // setBorder(BorderFactory.createTitledBorder(playerOwner));
+        setBorder(BorderFactory.createTitledBorder(playerOwner));
 
         panel.add(colorLabel);
         panel.add(colorField);
