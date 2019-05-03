@@ -1,16 +1,19 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Vector;
 
 public class Menu extends JPanel{
     private JButton play;
     private JButton exit;
     private JPanel panel;
-    private Timer timer;
+	private Timer timer;
+	private SnakeSnacks game;
 
-    public Menu(Timer timer){
+    public Menu(Timer timer, SnakeSnacks game){
 
         this.timer = timer;
+		this.game = game;
 
         panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -36,7 +39,9 @@ public class Menu extends JPanel{
 
     private class PlayButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            timer.start();
+			System.out.println("Start!");
+			timer.start();
+			game.reset();
         }
     }
 }

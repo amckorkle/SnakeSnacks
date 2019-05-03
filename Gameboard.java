@@ -42,7 +42,19 @@ public class Gameboard extends JPanel {
     // set the tile at the given location to null
     public void deleteTileAtPoint(int x, int y) {
         gameGrid[y][x] = null;
-    }
+	}
+	
+	public void reset(){
+		Tile curTile;
+        for (int r = 0; r < gameGrid.length; r++) {
+            for (int c = 0; c < gameGrid[0].length; c++) {
+				curTile = gameGrid[r][c];
+                if(curTile instanceof Snakebody){
+					gameGrid[r][c] = null; 
+				}
+            }
+        }
+	}
 
     public void foodEaten() {
         deleteTileAtPoint((int) foodLocation.getX(), (int) foodLocation.getY());

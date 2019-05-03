@@ -27,11 +27,10 @@ public class SnakeSnacks extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		keyMngr = new KeyListenerManager();
 		addKeyListener(keyMngr);
-
 		timer = new Timer(200, new timerListener());
+		
 
 		playerPanel = new JPanel();
-		menu = new Menu(timer);
 
 		gameboard = new Gameboard(keyMngr);
 		add(gameboard);
@@ -42,6 +41,8 @@ public class SnakeSnacks extends JFrame {
 		players = new Vector<Player>();
 		players.add(panel1);
 		players.add(panel2);
+		menu = new Menu(timer, this);
+
 
 		initPlayerSnakes();
 		initWall();
@@ -86,6 +87,13 @@ public class SnakeSnacks extends JFrame {
 		}
 	}
 
+	public void reset(){
+		gameboard.reset();
+		for(Player p: players){
+			p.reset();
+		}
+	}
+
 	private void initWall() {
 		int height = gameboard.getBoardHeight();
 		int width = gameboard.getBoardWidth();
@@ -100,7 +108,7 @@ public class SnakeSnacks extends JFrame {
 	}
 
 	public void collisionHasOccured(Set<Player> collidedPlayers) {
-		timer.stop();
+		//timer.stop();
 		System.out.println("Game end due to collision");
 		System.out.print("Losers: ");
 
@@ -112,7 +120,9 @@ public class SnakeSnacks extends JFrame {
 	}
 
 	private class timerListener implements ActionListener {
+		
 		public void actionPerformed(ActionEvent e) {
+
 			CollisionManager collMngr = new CollisionManager(gameboard);
 			Vector<Snakebody> newSnakebodies = new Vector<Snakebody>();
 
@@ -136,6 +146,20 @@ public class SnakeSnacks extends JFrame {
 
 			} else {
 				collisionHasOccured(collidedPlayers);
+				Vector<Player> winningPlayer = new Vector<Player>(players);
+
+				for(Player collidedP : collidedPlayers){
+					for(Player p: players){
+						if(collidedP == p){
+							winningPlayer.remove(p);
+						}
+					}
+				}
+
+				if(!winningPlayer.isEmpty()){
+					winningPlayer.get(0).wonRound();
+				}
+				timer.stop();
 				// then reset everthing
 			}
 

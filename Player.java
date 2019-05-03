@@ -55,11 +55,13 @@ public class Player extends JPanel {
 		colorField.setFocusable(false);
         colorField.addActionListener(new ComboBoxListener());
         roundLabel = new JLabel("ROUND SCORE: ");
-        roundWins = new JTextField(8);
-        roundWins.setEditable(false);
+		roundWins = new JTextField(8);
+		roundWins.setEditable(false);
+		roundWins.setText("0");
         gameLabel = new JLabel("GAME SCORE: ");
         gameWins = new JTextField(8);
-        gameWins.setEditable(false);
+		gameWins.setEditable(false);
+		gameWins.setText("0");
 
         this.gb = gameboard;
 
@@ -67,15 +69,36 @@ public class Player extends JPanel {
 
         assignPanel(panel, playerOwner);
 
-    }
+	}
+	
+	public void reset(){
+		System.out.println("Resetting...");
+		roundScore = 0;
+		roundWins.setText("0");
+
+		justAteFood = false;
+		curDir = Direction.DOWN;
+		tempDir = Direction.DOWN;
+		snake = new Vector<Snakebody>();
+		Snakebody s = initSnake();
+		gb.addToGameGrid(s, s.getX(), s.getY());
+	}
 
     public Snakebody getSnakebodyHead() {
         return snake.get(0);
     }
 
-    public void incrementRoundWins(String playerOwner) {
-        roundScore++;
-    }
+    public void incrementRoundScore() {
+		roundScore++;
+		roundWins.setText("" + roundScore);
+	}
+	
+	public void wonRound(){
+		gameScore += roundScore;
+		roundScore = 0;
+		roundWins.setText("" + roundScore);
+		gameWins.setText("" + gameScore);
+	}
 
     public void setDirection(Direction newOrient) {
         boolean isSameDir = curDir == newOrient;
@@ -159,6 +182,7 @@ public class Player extends JPanel {
     }
 
     public void eatFood() {
+		incrementRoundScore();
         justAteFood = true;
     }
 
