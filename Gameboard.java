@@ -46,7 +46,8 @@ public class Gameboard extends JPanel {
 
     public void foodEaten() {
         deleteTileAtPoint((int) foodLocation.getX(), (int) foodLocation.getY());
-        placeFood();
+		placeFood();
+		food.foodIsMoved();
     }
 
     public void placeFood() {

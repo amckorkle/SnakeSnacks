@@ -36,8 +36,8 @@ public class SnakeSnacks extends JFrame {
 		gameboard = new Gameboard(keyMngr);
 		add(gameboard);
 
-		panel1 = new Player("Player 1", new Point(1, 1), gameboard);
-		panel2 = new Player("Player 2", new Point(10, 10), gameboard);
+		panel1 = new Player("Player 1", new Point(1, 4), gameboard);
+		panel2 = new Player("Player 2", new Point(23, 4), gameboard);
 
 		players = new Vector<Player>();
 		players.add(panel1);

@@ -13,6 +13,7 @@ public class Food extends Tile{
 	Image cheese;
 	Image cupcake;
 	Image donut;
+	private Image curImage;
 	private int randomNumber;
 	private Graphics graphic;
 	private int food_x;
@@ -24,6 +25,7 @@ public class Food extends Tile{
 
 	
 	public Food(){
+		
 		try{
 			apple = ImageIO.read(new File("FoodIcons/apple.png"));
 			banana = ImageIO.read(new File("FoodIcons/banana.png"));
@@ -35,12 +37,13 @@ public class Food extends Tile{
 		catch(IOException e){
 			System.out.println(e.getMessage());
 		}
+		foodIsMoved();
 	}
 
 	public void paint(Graphics graphic, int food_x, int food_y) {
         //super.paint(g);
-		Image image = chooseImage();
-        graphic.drawImage(image, food_x, food_y, 40, 40, null);	
+		
+        graphic.drawImage(curImage, food_x, food_y, 40, 40, null);	
    }
 
 	public Image chooseImage(){
@@ -59,9 +62,9 @@ public class Food extends Tile{
 			return donut;
 	}
 
-	//public display(){
-
-	//}
+	public void foodIsMoved(){
+		curImage = chooseImage();
+	}
 
 	public int generateRandomNumber(){
 		Random rand = new Random();
