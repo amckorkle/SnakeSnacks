@@ -39,7 +39,6 @@ public class Menu extends JPanel{
 
     private class PlayButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-			System.out.println("Start!");
 			timer.start();
 			game.reset();
         }

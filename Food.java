@@ -43,7 +43,7 @@ public class Food extends Tile{
 	public void paint(Graphics graphic, int food_x, int food_y) {
         //super.paint(g);
 		
-        graphic.drawImage(curImage, food_x, food_y, 40, 40, null);	
+        graphic.drawImage(curImage, food_x, food_y, Tile.SCALE, Tile.SCALE, null);	
    }
 
 	public Image chooseImage(){

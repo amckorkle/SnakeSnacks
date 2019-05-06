@@ -6,8 +6,8 @@ import java.util.Set;
 import java.util.Vector;
 
 public class SnakeSnacks extends JFrame {
-	public static final int WINDOW_W = 1020;
-	public static final int WINDOW_H = 1000;
+	public static final int WINDOW_W = Gameboard.GG_W * Tile.SCALE + 20; // 25 tiles
+	public static final int WINDOW_H = Gameboard.GG_H * Tile.SCALE + 200; // 20 tiles
 	private Gameboard gameboard;
 	private KeyListenerManager keyMngr;
 
@@ -25,9 +25,10 @@ public class SnakeSnacks extends JFrame {
 		setTitle("SnakeSnacks");
 		setSize(WINDOW_W, WINDOW_H);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setResizable(false);
 		keyMngr = new KeyListenerManager();
 		addKeyListener(keyMngr);
-		timer = new Timer(200, new timerListener());
+		timer = new Timer(250, new timerListener());
 		
 
 		playerPanel = new JPanel();
@@ -35,8 +36,8 @@ public class SnakeSnacks extends JFrame {
 		gameboard = new Gameboard(keyMngr);
 		add(gameboard);
 
-		panel1 = new Player("Player 1", new Point(1, 4), gameboard);
-		panel2 = new Player("Player 2", new Point(23, 4), gameboard);
+		panel1 = new Player("Player 1", new Point(1, 10), gameboard, Player.Direction.RIGHT);
+		panel2 = new Player("Player 2", new Point(23, 10), gameboard, Player.Direction.LEFT);
 
 		players = new Vector<Player>();
 		players.add(panel1);
@@ -107,18 +108,6 @@ public class SnakeSnacks extends JFrame {
 		}
 	}
 
-	public void collisionHasOccured(Set<Player> collidedPlayers) {
-		//timer.stop();
-		System.out.println("Game end due to collision");
-		System.out.print("Losers: ");
-
-		for (Player p : collidedPlayers) {
-			System.out.print(p.getName() + ", ");
-		}
-		System.out.println();
-
-	}
-
 	private class timerListener implements ActionListener {
 		
 		public void actionPerformed(ActionEvent e) {
@@ -145,7 +134,6 @@ public class SnakeSnacks extends JFrame {
 				gameboard.repaint();
 
 			} else {
-				collisionHasOccured(collidedPlayers);
 				Vector<Player> winningPlayer = new Vector<Player>(players);
 
 				for(Player collidedP : collidedPlayers){

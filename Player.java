@@ -29,10 +29,11 @@ public class Player extends JPanel {
         UP, RIGHT, DOWN, LEFT
     };
 
-    private Direction curDir = Direction.DOWN;
-    private Direction tempDir = Direction.DOWN;
+	private Direction startDir;
+    private Direction curDir;
+    private Direction tempDir;
 
-    public Player(String player, Point startPoint, Gameboard gameboard) {
+    public Player(String player, Point startPoint, Gameboard gameboard, Direction startDir) {
         playerOwner = player;
         panel = new JPanel();
         panel.setLayout(new GridLayout(3, 1));
@@ -65,20 +66,22 @@ public class Player extends JPanel {
 
         this.gb = gameboard;
 
-        this.startPoint = startPoint;
+		this.startPoint = startPoint;
+		this.startDir = startDir;
+		curDir = startDir;
+		tempDir = startDir;
 
         assignPanel(panel, playerOwner);
 
 	}
 	
 	public void reset(){
-		System.out.println("Resetting...");
 		roundScore = 0;
 		roundWins.setText("0");
 
 		justAteFood = false;
-		curDir = Direction.DOWN;
-		tempDir = Direction.DOWN;
+		curDir = startDir;
+		tempDir = startDir;
 		snake = new Vector<Snakebody>();
 		Snakebody s = initSnake();
 		gb.addToGameGrid(s, s.getX(), s.getY());
@@ -111,14 +114,12 @@ public class Player extends JPanel {
 
     private class ComboBoxListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-			System.out.println(colorField.getSelectedItem());
 			setColor(map.get(colorField.getSelectedItem()));
             colorField.setEnabled(false);
         }
     }
 
     public void display(Graphics g) {
-        //System.out.println("waht is this");
         for (Snakebody t : snake) {
             t.display(g, t.getX(), t.getY());
         }

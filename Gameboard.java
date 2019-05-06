@@ -4,8 +4,8 @@ import java.util.Random;
 
 public class Gameboard extends JPanel {
     Tile[][] gameGrid;
-    private static int GG_H = 20;
-    private static int GG_W = 25;
+    public static int GG_H = 20;
+    public static int GG_W = 25;
     private Point foodLocation;
     private Food food;
     private Random rnd;
@@ -72,7 +72,6 @@ public class Gameboard extends JPanel {
         }
 
         foodLocation.setLocation(x, y);
-        System.out.println(x + ", " + y);
         addToGameGrid(food, x, y);
     }
 
