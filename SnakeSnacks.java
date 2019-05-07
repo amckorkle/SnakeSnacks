@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.Vector;
 
 public class SnakeSnacks extends JFrame {
-	public static final int WINDOW_W = Gameboard.GG_W * Tile.SCALE + 20; // 25 tiles
+	public static final int WINDOW_W = Gameboard.GG_W * Tile.SCALE + 5; // 25 tiles
 	public static final int WINDOW_H = Gameboard.GG_H * Tile.SCALE + 200; // 20 tiles
 	private Gameboard gameboard;
 	private KeyListenerManager keyMngr;
